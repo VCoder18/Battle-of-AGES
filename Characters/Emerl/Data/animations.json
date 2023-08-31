@@ -1,0 +1,10 @@
+{
+	"Idle": {
+		"speed": 1.0,
+		"loop": true
+	},
+	"Walk": {
+		"speed": 1.0,
+		"loop": true
+	}
+}

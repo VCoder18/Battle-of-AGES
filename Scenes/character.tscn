@@ -1,0 +1,63 @@
+[gd_scene load_steps=8 format=3 uid="uid://bqlubsnqa28cb"]
+
+[ext_resource type="Script" path="res://Scripts/character.gd" id="1_g8n4u"]
+[ext_resource type="Texture2D" uid="uid://cfssrucl7ysem" path="res://Characters/Emerl/Animations/Movement/Idle/0.png" id="2_1wchx"]
+[ext_resource type="Script" path="res://Scripts/state_machine.gd" id="2_nx5bd"]
+[ext_resource type="Script" path="res://Scripts/States/idle.gd" id="3_g10gn"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_cbecm"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_1wchx")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_gsiba"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_o7hqp"]
+radius = 0.45
+height = 1.87945
+
+[node name="Character" type="CharacterBody3D"]
+script = ExtResource("1_g8n4u")
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("init_state")]
+script = ExtResource("2_nx5bd")
+init_state = NodePath("Movement/Idle")
+
+[node name="Movement" type="Node" parent="StateMachine"]
+
+[node name="Idle" type="Node" parent="StateMachine/Movement"]
+script = ExtResource("3_g10gn")
+anim_name = "Idle"
+
+[node name="Sprite" type="AnimatedSprite3D" parent="."]
+layers = 3
+pixel_size = 0.05
+billboard = 1
+texture_filter = 0
+sprite_frames = SubResource("SpriteFrames_cbecm")
+
+[node name="Animator" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_gsiba")
+}
+
+[node name="IdleCollider" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0291252, 0)
+shape = SubResource("CapsuleShape3D_o7hqp")
+
+[node name="Shadow" type="SpotLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -0.0584178, 0.998292, 0, -0.998292, -0.0584178, 0, 1.36845, 0)
+light_energy = 10.0
+light_negative = true
+light_specular = 100.0
+shadow_enabled = true
+spot_range = 10.0
+spot_angle = 15.0
+
+[connection signal="frame_changed" from="Sprite" to="." method="_on_sprite_frame_changed"]

@@ -1,0 +1,72 @@
+[gd_scene load_steps=11 format=3 uid="uid://c38e2q5wye877"]
+
+[ext_resource type="PackedScene" uid="uid://bqlubsnqa28cb" path="res://Scenes/character.tscn" id="1_vyl8b"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_da8ku"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_hbwfr"]
+sky_material = SubResource("ProceduralSkyMaterial_da8ku")
+
+[sub_resource type="Environment" id="Environment_f7ig6"]
+background_mode = 2
+sky = SubResource("Sky_hbwfr")
+tonemap_mode = 2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ug7m7"]
+albedo_color = Color(0.0352941, 0.6, 0.054902, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_gs486"]
+size = Vector3(40, 1, 40)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_uduuh"]
+data = PackedVector3Array(-20, 0.5, 20, 20, 0.5, 20, -20, -0.5, 20, 20, 0.5, 20, 20, -0.5, 20, -20, -0.5, 20, 20, 0.5, -20, -20, 0.5, -20, 20, -0.5, -20, -20, 0.5, -20, -20, -0.5, -20, 20, -0.5, -20, 20, 0.5, 20, 20, 0.5, -20, 20, -0.5, 20, 20, 0.5, -20, 20, -0.5, -20, 20, -0.5, 20, -20, 0.5, -20, -20, 0.5, 20, -20, -0.5, -20, -20, 0.5, 20, -20, -0.5, 20, -20, -0.5, -20, 20, 0.5, 20, -20, 0.5, 20, 20, 0.5, -20, -20, 0.5, 20, -20, 0.5, -20, 20, 0.5, -20, -20, -0.5, 20, 20, -0.5, 20, -20, -0.5, -20, 20, -0.5, 20, 20, -0.5, -20, -20, -0.5, -20)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_b3bua"]
+albedo_color = Color(0.741176, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_f8kkh"]
+size = Vector3(5, 1, 5)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_bkmui"]
+data = PackedVector3Array(-2.5, 0.5, 2.5, 2.5, 0.5, 2.5, -2.5, -0.5, 2.5, 2.5, 0.5, 2.5, 2.5, -0.5, 2.5, -2.5, -0.5, 2.5, 2.5, 0.5, -2.5, -2.5, 0.5, -2.5, 2.5, -0.5, -2.5, -2.5, 0.5, -2.5, -2.5, -0.5, -2.5, 2.5, -0.5, -2.5, 2.5, 0.5, 2.5, 2.5, 0.5, -2.5, 2.5, -0.5, 2.5, 2.5, 0.5, -2.5, 2.5, -0.5, -2.5, 2.5, -0.5, 2.5, -2.5, 0.5, -2.5, -2.5, 0.5, 2.5, -2.5, -0.5, -2.5, -2.5, 0.5, 2.5, -2.5, -0.5, 2.5, -2.5, -0.5, -2.5, 2.5, 0.5, 2.5, -2.5, 0.5, 2.5, 2.5, 0.5, -2.5, -2.5, 0.5, 2.5, -2.5, 0.5, -2.5, 2.5, 0.5, -2.5, -2.5, -0.5, 2.5, 2.5, -0.5, 2.5, -2.5, -0.5, -2.5, 2.5, -0.5, 2.5, 2.5, -0.5, -2.5, -2.5, -0.5, -2.5)
+
+[node name="Training Arena" type="Node3D"]
+
+[node name="Environment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_f7ig6")
+
+[node name="Character" parent="." node_paths=PackedStringArray("CAMERA") instance=ExtResource("1_vyl8b")]
+transform = Transform3D(1, 0, -2.98023e-08, 0, 1, 0, -2.98023e-08, 0, 1, 1.90735e-06, 5.363, 1.90735e-06)
+CAMERA = NodePath("Camera")
+
+[node name="Camera" type="Camera3D" parent="Character"]
+transform = Transform3D(0.707107, -0.5, 0.5, 0, 0.707107, 0.707107, -0.707107, -0.5, 0.5, 20, 28, 20.685)
+projection = 1
+size = 11.7257
+
+[node name="Light" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 17.9609, 0)
+shadow_enabled = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+material_override = SubResource("StandardMaterial3D_ug7m7")
+mesh = SubResource("BoxMesh_gs486")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_uduuh")
+
+[node name="Platforms" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Platforms"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.59485, 0)
+material_override = SubResource("StandardMaterial3D_b3bua")
+mesh = SubResource("BoxMesh_f8kkh")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Platforms/MeshInstance3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Platforms/MeshInstance3D/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_bkmui")
